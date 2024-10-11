@@ -137,6 +137,7 @@ class _TeamswapperState extends State<Teamswapper> {
       }
     }
     positie.sort((a, b) => b['totaleElo'].compareTo(a['totaleElo']));
+    print(positie);
 
   });
 }
