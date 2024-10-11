@@ -137,7 +137,18 @@ class _TeamswapperState extends State<Teamswapper> {
       }
     }
     positie.sort((a, b) => b['totaleElo'].compareTo(a['totaleElo']));
-    print(positie);
+    for(int i = 0; i < positie.length; i++){
+      positie[i]['positie'] = i + 1;
+    }
+
+    for (var driver in drivers) {
+      for (var plek in positie) {
+        if (driver['name'] == plek['name']) {
+          driver['positie'] = plek['positie'];
+          print('${driver['name']} ${driver['positie']}');
+        }
+      }
+    }
 
   });
 }
