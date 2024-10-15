@@ -9,6 +9,9 @@ class Teamswapper extends StatefulWidget {
 }
 
 class _TeamswapperState extends State<Teamswapper> {
+  bool coureursZichtbaarheid = true;
+  bool overzicht = false;
+  int selectedIndex = 1;
   List<Image?> droppedImage = List.generate(20, (index) => null);
 
   // Functie om alle coureurs te resetten naar de grid
@@ -40,9 +43,6 @@ class _TeamswapperState extends State<Teamswapper> {
     });
   }
 
-  bool coureursZichtbaarheid = true;
-  bool overzicht = false;
-
   // Functie die ervoor zorgt dat er willekeurige coureurs bij een team worden gezet als je op de 'willekeurig toewijzen' knop klik
   void randomCoureurs() {
     setState(() {
@@ -65,9 +65,6 @@ class _TeamswapperState extends State<Teamswapper> {
     coureursZichtbaarheid = !coureursZichtbaarheid;
   });
   }
-
-
-  int selectedIndex = 1;
 
   // Functie om de bottomnavigation te laten werken
   void onItemTapped(int index) {

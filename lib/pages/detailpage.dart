@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_f1_app/services/race_data.dart';
 
 class CircuitDetailPage extends StatelessWidget {
+  const CircuitDetailPage({super.key});
+
   @override
   Widget build(BuildContext context) {
 
@@ -9,9 +11,9 @@ class CircuitDetailPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(race.land, style: TextStyle(color: Colors.white)),
+        title: Text(race.land, style: const TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFFFF1E00),
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.white, 
           ),
           centerTitle: true,
@@ -30,19 +32,19 @@ class CircuitDetailPage extends StatelessWidget {
             ),
             Text(
               race.circuitnaam,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
               'Locatie: ${race.locatie}',
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
             Text(
               'Land: ${race.land}',
-              style: TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 18),
             ),
-            SizedBox(height: 16),
-            Text(
+            const SizedBox(height: 16),
+            const Text(
               'Details nog toevoegen',
               style: TextStyle(fontSize: 16),
             ),

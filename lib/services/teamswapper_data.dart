@@ -130,13 +130,13 @@ List<Map<String, dynamic>> racingteams = [
     'name': 'RedBull Racing',
     'image': Image.asset('lib/assets/images/teams/RedBull.jpg'),
     'isVisible': true,
-    'ELO': 35.00
+    'ELO': 36.00
   },
   {
     'name': 'Mclaren',
     'image': Image.asset('lib/assets/images/teams/Mclaren.jpg'),
     'isVisible': true,
-    'ELO': 36.00
+    'ELO': 35.00
   },
   {
     'name': 'Ferrari',
@@ -160,30 +160,30 @@ List<Map<String, dynamic>> racingteams = [
     'name': 'Alpine',
     'image': Image.asset('lib/assets/images/teams/Alpine.jpg'),
     'isVisible': true,
-    'ELO': 31.00
+    'ELO': 32.00
   },
   {
     'name': 'RB',
     'image': Image.asset('lib/assets/images/teams/RB.jpg'),
     'isVisible': true,
-    'ELO': 30.00
+    'ELO': 31.50
   },
   {
     'name': 'Kick Sauber',
     'image': Image.asset('lib/assets/images/teams/KickSauber.jpg'),
     'isVisible': true,
-    'ELO': 30.00
+    'ELO': 31.00
   },
   {
     'name': 'Williams',
     'image': Image.asset('lib/assets/images/teams/Williams.jpg'),
     'isVisible': true,
-    'ELO': 30.00
+    'ELO': 31.25
   },
   {
     'name': 'Haas',
     'image': Image.asset('lib/assets/images/teams/Haas.jpg'),
     'isVisible': true,
-    'ELO': 30.00
+    'ELO': 31.00
   },
 ];
