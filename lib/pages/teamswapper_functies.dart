@@ -2,19 +2,50 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 class TeamswapperFuncties {
-
   // Functie die ervoor zorgt dat er willekeurige coureurs bij een team worden gezet als je op de 'willekeurig toewijzen' knop klik
-  static void randomCoureurs(droppedImage, drivers){
+  static void randomCoureurs(droppedImage, drivers) {
     List<int> beschikbarePosities = List.generate(20, (index) => index);
-      
-      // loopt door de lijst met coureurs en plaats deze op een willekeurige positie in de nieuwe lijst beschikbare posities
-      for (var driver in drivers) {
-        int randomIndex = Random().nextInt(beschikbarePosities.length);
-        int index = beschikbarePosities[randomIndex];
-        beschikbarePosities.removeAt(randomIndex);
-        droppedImage[index] = driver['image'];
-        driver['isVisible'] = false;
+
+    // loopt door de lijst met coureurs en plaats deze op een willekeurige positie in de nieuwe lijst beschikbare posities
+    for (var driver in drivers) {
+      int randomIndex = Random().nextInt(beschikbarePosities.length);
+      int index = beschikbarePosities[randomIndex];
+      beschikbarePosities.removeAt(randomIndex);
+      droppedImage[index] = driver['image'];
+      driver['isVisible'] = false;
+    }
+  }
+
+  static void simuleerKampioenschap(droppedImage, racingteams, drivers) {
+    List<Map<String, dynamic>> positie = [];
+
+    // bereken de scores van de driver list op basis van het team waar ze ingedeeld zijn
+    for (var driver in drivers) {
+      if (!driver['isVisible']) {
+        double teamElo = 0;
+        int driverIndex = droppedImage.indexOf(driver['image']);
+
+        // pakt de elo van het juiste team waarbij de driver wordt ingedeeld
+        teamElo = racingteams[driverIndex ~/ 2]['ELO'];
+
+        // Bereken de totale score
+        double totaleElo = driver['ELO'] + teamElo;
+        positie.add({'name': driver['name'], 'totaleElo': totaleElo});
       }
+    }
+    positie.sort((a, b) => b['totaleElo'].compareTo(a['totaleElo']));
+    for (int i = 0; i < positie.length; i++) {
+      positie[i]['positie'] = i + 1;
+    }
+
+    for (var driver in drivers) {
+      for (var plek in positie) {
+        if (driver['name'] == plek['name']) {
+          driver['positie'] = plek['positie'];
+          print('${driver['name']} ${driver['positie']}');
+        }
+      }
+    }
   }
 
   // Functie om alle coureurs te resetten naar de grid

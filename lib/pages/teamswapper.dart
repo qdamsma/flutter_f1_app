@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_f1_app/pages/teamswapper_functies.dart';
 import 'package:flutter_f1_app/services/teamswapper_data.dart';
 
-
 class Teamswapper extends StatefulWidget {
   @override
   State<Teamswapper> createState() => _TeamswapperState();
@@ -12,7 +11,7 @@ class _TeamswapperState extends State<Teamswapper> {
   List<Image?> droppedImage = List.generate(20, (index) => null);
 
   // Haalt reset functie op uit teamswapper_functies
-  void resetKnop(){
+  void resetKnop() {
     setState(() {
       droppedImage = List.generate(20, (index) => null);
       drivers = TeamswapperFuncties.resetDrivers();
@@ -29,12 +28,12 @@ class _TeamswapperState extends State<Teamswapper> {
       TeamswapperFuncties.randomCoureurs(droppedImage, drivers);
     });
   }
-  
+
   //Functie die de onderste grid aan coureurs zichtbaar maakt en verbergt, zodat er meer overzicht is
   void verbergCoureurs() {
-  setState(() {
-    coureursZichtbaarheid = !coureursZichtbaarheid;
-  });
+    setState(() {
+      coureursZichtbaarheid = !coureursZichtbaarheid;
+    });
   }
 
   // Functie om de bottomnavigation te laten werken
@@ -48,78 +47,47 @@ class _TeamswapperState extends State<Teamswapper> {
     }
   }
 
-  
   // Functie om het kampioenschap van een echt F1 seizoen te laten simuleren
   void simuleerKampioenschap() {
-  setState(() {
-    List<Map<String, dynamic>> positie = [];
-
-    // bereken de scores van de driver list op basis van het team waar ze ingedeeld zijn
-    for (var driver in drivers) {
-      if (!driver['isVisible']) {
-        double teamElo = 0;
-        int driverIndex = droppedImage.indexOf(driver['image']);
-        
-        // pakt de elo van het juiste team waarbij de driver wordt ingedeeld
-        teamElo = racingteams[driverIndex ~/ 2]['ELO'];
-      
-
-        // Bereken de totale score
-        double totaleElo = driver['ELO'] + teamElo;
-        positie.add({'name': driver['name'], 'totaleElo': totaleElo});
-      }
-    }
-    positie.sort((a, b) => b['totaleElo'].compareTo(a['totaleElo']));
-    for(int i = 0; i < positie.length; i++){
-      positie[i]['positie'] = i + 1;
-    }
-
-    for (var driver in drivers) {
-      for (var plek in positie) {
-        if (driver['name'] == plek['name']) {
-          driver['positie'] = plek['positie'];
-          overzicht = true;
-          print('${driver['name']} ${driver['positie']}');
-        }
-      }
-    }
-
+    setState(() {
+      TeamswapperFuncties.simuleerKampioenschap(
+          droppedImage, racingteams, drivers);
+      overzicht = true;
+    });
   }
-  );
-}
 
-Future<void> _showMyDialog() async {
-  return showDialog<void>(
-    context: context,
-    barrierDismissible: false, // user must tap button!
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Overzicht Simulatie'),
-        content: SingleChildScrollView(
-          child: ListBody(
-            children: drivers.map((driver){
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Future<void> overzichtSimulatie() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Overzicht Simulatie'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: drivers.map((driver) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(driver['name']),
                     Text(driver['positie'].toString()),
                   ],
-              );
-            }).toList(),
+                );
+              }).toList(),
+            ),
           ),
-        ),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('Terug'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Terug'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   // Build van de pagina
   @override
@@ -143,27 +111,29 @@ Future<void> _showMyDialog() async {
           ),
           ElevatedButton(
             onPressed: verbergCoureurs,
-            child: Text(coureursZichtbaarheid ? "Verberg Coureurs" : "Toon Coureurs"),
+            child: Text(
+                coureursZichtbaarheid ? "Verberg Coureurs" : "Toon Coureurs"),
           ),
           ElevatedButton(
             onPressed: simuleerKampioenschap,
             child: Text("Simuleer Kampioenschap"),
           ),
           if (overzicht == true)
-          ElevatedButton(
-            onPressed: _showMyDialog,
-            child: Text("Overzicht"),
-          ),
+            ElevatedButton(
+              onPressed: overzichtSimulatie,
+              child: Text("Overzicht"),
+            ),
           Expanded(
               flex: 3,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                      childAspectRatio: 1 / 1.1,),
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                    childAspectRatio: 1 / 1.1,
+                  ),
                   itemCount: racingteams.length,
                   itemBuilder: (context, index) {
                     final team = racingteams[index];
@@ -189,24 +159,21 @@ Future<void> _showMyDialog() async {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              dragTargetMaken(
-                                  index * 2), 
-                              dragTargetMaken(
-                                  index * 2 + 1), 
+                              dragTargetMaken(index * 2),
+                              dragTargetMaken(index * 2 + 1),
                             ],
                           ),
                           SizedBox(height: 10),
-
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              //contoleer of een afbeelding is gedropt voor de 1e coureur 
+                              //contoleer of een afbeelding is gedropt voor de 1e coureur
                               Text(
                                 droppedImage[index * 2] != null
                                     ? getPositie(droppedImage[index * 2])
                                     : "",
                               ),
-                              //contoleer of een afbeelding is gedropt voor de 2e coureur 
+                              //contoleer of een afbeelding is gedropt voor de 2e coureur
                               Text(
                                 droppedImage[index * 2 + 1] != null
                                     ? getPositie(droppedImage[index * 2 + 1])
@@ -220,7 +187,7 @@ Future<void> _showMyDialog() async {
                   },
                 ),
               )),
-              // Als de toon coureurs knop op toon staat, laat hij de coureurs grid zien
+          // Als de toon coureurs knop op toon staat, laat hij de coureurs grid zien
           if (coureursZichtbaarheid == true)
             Expanded(
               flex: 2,
@@ -275,11 +242,11 @@ Future<void> _showMyDialog() async {
     );
   }
 
-  String getPositie(Image ?image){
-    // kijkt in de drivers list of de image hetzelfde is als de gedropte image 
+  String getPositie(Image? image) {
+    // kijkt in de drivers list of de image hetzelfde is als de gedropte image
     // en of de list een positie bevat zodat het de positie kan terug geven
-    for (var driver in drivers){
-      if(driver['image'] == image && driver.containsKey('positie')){
+    for (var driver in drivers) {
+      if (driver['image'] == image && driver.containsKey('positie')) {
         return 'P${driver['positie']}';
       }
     }
