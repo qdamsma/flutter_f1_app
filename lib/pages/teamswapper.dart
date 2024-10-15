@@ -155,7 +155,8 @@ class _TeamswapperState extends State<Teamswapper> {
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       mainAxisSpacing: 10,
-                      crossAxisSpacing: 10),
+                      crossAxisSpacing: 10,
+                      childAspectRatio: 1 / 1.1,),
                   itemCount: racingteams.length,
                   itemBuilder: (context, index) {
                     final team = racingteams[index];
@@ -185,6 +186,25 @@ class _TeamswapperState extends State<Teamswapper> {
                                   index * 2), 
                               dragTargetMaken(
                                   index * 2 + 1), 
+                            ],
+                          ),
+                          SizedBox(height: 10),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              //contoleer of een afbeelding is gedropt voor de 1e coureur 
+                              Text(
+                                droppedImage[index * 2] != null
+                                    ? getPositie(droppedImage[index * 2])
+                                    : "",
+                              ),
+                              //contoleer of een afbeelding is gedropt voor de 2e coureur 
+                              Text(
+                                droppedImage[index * 2 + 1] != null
+                                    ? getPositie(droppedImage[index * 2 + 1])
+                                    : "",
+                              ),
                             ],
                           ),
                         ],
@@ -246,6 +266,16 @@ class _TeamswapperState extends State<Teamswapper> {
         onTap: onItemTapped,
       ),
     );
+  }
+
+  String getPositie(Image ?image){
+    // kijkt in de drivers list of de image hetzelfde is als de gedropte image en of de list een positie bevat zodat het de positie kan terug geven
+    for (var driver in drivers){
+      if(driver['image'] == image && driver.containsKey('positie')){
+        return 'P${driver['positie']}';
+      }
+    }
+    return '';
   }
 
   // Widget voor de targets in een card
