@@ -41,7 +41,7 @@ class _TeamswapperState extends State<Teamswapper> {
   }
 
   bool coureursZichtbaarheid = true;
-  bool postitieGesimuleerd = false;
+  bool overzicht = false;
 
   // Functie die ervoor zorgt dat er willekeurige coureurs bij een team worden gezet als je op de 'willekeurig toewijzen' knop klik
   void randomCoureurs() {
@@ -110,13 +110,47 @@ class _TeamswapperState extends State<Teamswapper> {
       for (var plek in positie) {
         if (driver['name'] == plek['name']) {
           driver['positie'] = plek['positie'];
-          postitieGesimuleerd = true;
+          overzicht = true;
           print('${driver['name']} ${driver['positie']}');
         }
       }
     }
 
-  });
+  }
+  );
+}
+
+Future<void> _showMyDialog() async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Overzicht Simulatie'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: drivers.map((driver){
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(driver['name']),
+                    Text(driver['positie'].toString()),
+                  ],
+              );
+            }).toList(),
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('Terug'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
 
   // Build van de pagina
@@ -146,6 +180,11 @@ class _TeamswapperState extends State<Teamswapper> {
           ElevatedButton(
             onPressed: simuleerKampioenschap,
             child: Text("Simuleer Kampioenschap"),
+          ),
+          if (overzicht == true)
+          ElevatedButton(
+            onPressed: _showMyDialog,
+            child: Text("Overzicht"),
           ),
           Expanded(
               flex: 3,
