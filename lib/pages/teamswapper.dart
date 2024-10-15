@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_f1_app/pages/teamswapper_functies.dart';
 import 'package:flutter_f1_app/services/teamswapper_data.dart';
@@ -12,7 +11,7 @@ class Teamswapper extends StatefulWidget {
 class _TeamswapperState extends State<Teamswapper> {
   List<Image?> droppedImage = List.generate(20, (index) => null);
 
-  // Functie om alle coureurs te resetten naar de grid
+  // Haalt reset functie op uit teamswapper_functies
   void resetKnop(){
     setState(() {
       droppedImage = List.generate(20, (index) => null);
@@ -24,19 +23,10 @@ class _TeamswapperState extends State<Teamswapper> {
   bool overzicht = false;
   int selectedIndex = 1;
 
-  // Functie die ervoor zorgt dat er willekeurige coureurs bij een team worden gezet als je op de 'willekeurig toewijzen' knop klik
+  // Haalt randomCoureurs functie op uit teamswapper_functies
   void randomCoureurs() {
     setState(() {
-      List<int> beschikbarePosities = List.generate(20, (index) => index);
-      
-      // loopt door de lijst met coureurs en plaats deze op een willekeurige positie in de nieuwe lijst beschikbare posities
-      for (var driver in drivers) {
-        int randomIndex = Random().nextInt(beschikbarePosities.length);
-        int index = beschikbarePosities[randomIndex];
-        beschikbarePosities.removeAt(randomIndex);
-        droppedImage[index] = driver['image'];
-        driver['isVisible'] = false;
-      }
+      TeamswapperFuncties.randomCoureurs(droppedImage, drivers);
     });
   }
   
@@ -286,7 +276,8 @@ Future<void> _showMyDialog() async {
   }
 
   String getPositie(Image ?image){
-    // kijkt in de drivers list of de image hetzelfde is als de gedropte image en of de list een positie bevat zodat het de positie kan terug geven
+    // kijkt in de drivers list of de image hetzelfde is als de gedropte image 
+    // en of de list een positie bevat zodat het de positie kan terug geven
     for (var driver in drivers){
       if(driver['image'] == image && driver.containsKey('positie')){
         return 'P${driver['positie']}';

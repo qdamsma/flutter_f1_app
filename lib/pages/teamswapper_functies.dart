@@ -1,6 +1,23 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class TeamswapperFuncties {
+
+  // Functie die ervoor zorgt dat er willekeurige coureurs bij een team worden gezet als je op de 'willekeurig toewijzen' knop klik
+  static void randomCoureurs(droppedImage, drivers){
+    List<int> beschikbarePosities = List.generate(20, (index) => index);
+      
+      // loopt door de lijst met coureurs en plaats deze op een willekeurige positie in de nieuwe lijst beschikbare posities
+      for (var driver in drivers) {
+        int randomIndex = Random().nextInt(beschikbarePosities.length);
+        int index = beschikbarePosities[randomIndex];
+        beschikbarePosities.removeAt(randomIndex);
+        droppedImage[index] = driver['image'];
+        driver['isVisible'] = false;
+      }
+  }
+
+  // Functie om alle coureurs te resetten naar de grid
   static List<Map<String, dynamic>> resetDrivers() {
     return [
       {
