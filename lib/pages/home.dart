@@ -3,8 +3,8 @@ import 'package:flutter_f1_app/services/race_data.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
 
-
 class F1_Home extends StatefulWidget {
+  const F1_Home({super.key});
 
   @override
   State<F1_Home> createState() => _F1_HomeState();
@@ -15,6 +15,7 @@ class _F1_HomeState extends State<F1_Home> {
   RaceData? nextRace;
   Duration timeUntilNextRace = const Duration();
   Timer? countdownTimer;
+  int selectedIndex = 0;
 
   @override
   void initState() {
@@ -60,7 +61,6 @@ class _F1_HomeState extends State<F1_Home> {
         backgroundColor: const Color(0xFFFF1E00),
         elevation: 0.0,
       ),
-      
       body: Column(
         children: [
           if (nextRace != null)
@@ -73,12 +73,16 @@ class _F1_HomeState extends State<F1_Home> {
                   children: [
                     Text(
                       'Volgende GP: ${nextRace!.land}, ${nextRace!.locatie}',
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 255, 255, 255)),
-                    
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 255, 255, 255)),
                     ),
                     Text(
                       '${timeUntilNextRace.inDays}d ${timeUntilNextRace.inHours % 24}h ${timeUntilNextRace.inMinutes % 60}m ${timeUntilNextRace.inSeconds % 60}s',
-                      style: const TextStyle(fontSize: 16, color: Color.fromARGB(255, 255, 255, 255)),
+                      style: const TextStyle(
+                          fontSize: 16,
+                          color: Color.fromARGB(255, 255, 255, 255)),
                     ),
                   ],
                 ),
@@ -99,7 +103,8 @@ class _F1_HomeState extends State<F1_Home> {
                           fit: BoxFit.cover,
                         ),
                         title: Text(race.land,
-                            style: const TextStyle(fontWeight: FontWeight.bold)),
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
                         subtitle: Text(
                             '${race.locatie}, ${race.weekendDates.join(' - ')}'),
                         trailing: const Icon(Icons.arrow_forward),
@@ -116,26 +121,6 @@ class _F1_HomeState extends State<F1_Home> {
           ),
         ],
       ),
-      
-      bottomNavigationBar: BottomNavigationBar( 
-        items: const [ 
-          BottomNavigationBarItem( icon: Icon(Icons.home), label: 'Home', ), 
-          BottomNavigationBarItem( icon: Icon(Icons.swap_calls), label: 'Teamswapper', ), 
-        ], 
-        currentIndex: 0, 
-        selectedItemColor: const Color(0xFFFF1E00), 
-        onTap: (index) { 
-          switch (index) { 
-            case 0: 
-            Navigator.pushReplacementNamed(context, '/home'); 
-            break;
-            case 1: 
-            Navigator.pushReplacementNamed(context, '/teamswapper'); 
-            break; 
-          } 
-        }, 
-      ), 
-
     );
   }
 }

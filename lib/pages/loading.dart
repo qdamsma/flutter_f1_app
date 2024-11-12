@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_f1_app/services/race_data.dart';
 
 class Loading extends StatefulWidget {
+  const Loading({super.key});
+
   @override
   State<Loading> createState() => _LoadingState();
 }
@@ -11,16 +13,17 @@ class _LoadingState extends State<Loading> {
 
   // Functie die circuits ophaald vanuit race_data.dart om ze vervolgens te geven aan home.dart
   void setupCircuitData() {
-    futureRaceData = RaceData.getCircuits(); 
+    futureRaceData = RaceData.getCircuits();
     futureRaceData.then((races) {
-      Navigator.pushReplacementNamed(context, '/home', arguments: {'Racedata': races});
+      Navigator.pushReplacementNamed(context, '/home',
+          arguments: {'Racedata': races});
     }).catchError((error) {
       print('Error: $error');
     });
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     setupCircuitData();
   }
@@ -33,13 +36,15 @@ class _LoadingState extends State<Loading> {
         future: futureRaceData,
         builder: (context, dataOphalen) {
           if (dataOphalen.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator()); // Laadindicator
+            return const Center(
+                child: CircularProgressIndicator()); // Laadindicator
           } else if (dataOphalen.hasError) {
-            return Center(child: Text('Error: ${dataOphalen.error}')); // Foutmelding
+            return Center(
+                child: Text('Error: ${dataOphalen.error}')); // Foutmelding
           } else if (dataOphalen.hasData) {
-            return Center(child: Text('Data correct opgehaald'));
+            return const Center(child: Text('Data correct opgehaald'));
           } else {
-            return Center(child: Text('Geen data beschikbaar'));
+            return const Center(child: Text('Geen data beschikbaar'));
           }
         },
       ),

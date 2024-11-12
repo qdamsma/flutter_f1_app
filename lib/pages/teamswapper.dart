@@ -3,6 +3,8 @@ import 'package:flutter_f1_app/pages/teamswapper_functies.dart';
 import 'package:flutter_f1_app/services/teamswapper_data.dart';
 
 class Teamswapper extends StatefulWidget {
+  const Teamswapper({super.key});
+
   @override
   State<Teamswapper> createState() => _TeamswapperState();
 }
@@ -20,7 +22,6 @@ class _TeamswapperState extends State<Teamswapper> {
 
   bool coureursZichtbaarheid = true;
   bool overzicht = false;
-  int selectedIndex = 1;
 
   // Haalt randomCoureurs functie op uit teamswapper_functies
   void randomCoureurs() {
@@ -34,17 +35,6 @@ class _TeamswapperState extends State<Teamswapper> {
     setState(() {
       coureursZichtbaarheid = !coureursZichtbaarheid;
     });
-  }
-
-  // Functie om de bottomnavigation te laten werken
-  void onItemTapped(int index) {
-    switch (index) {
-      case 0:
-        Navigator.pushReplacementNamed(context, '/home');
-        break;
-      case 1:
-        break;
-    }
   }
 
   // Functie om het kampioenschap van een echt F1 seizoen te laten simuleren
@@ -94,35 +84,80 @@ class _TeamswapperState extends State<Teamswapper> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Teamswapper', style: TextStyle(color: Colors.white)),
+        title: Image.asset('lib/assets/images/f1_logo_app.png', height: 40),
         centerTitle: true,
         backgroundColor: const Color(0xFFFF1E00),
+        elevation: 0.0,
       ),
       body: Column(
         children: [
-          // Buttons voor verschillende functies op de pagina
-          ElevatedButton(
-            onPressed: randomCoureurs,
-            child: Text("Willekeurig toewijzen"),
+          Wrap(
+            spacing: 8.0,
+            runSpacing: 8.0,
+            alignment: WrapAlignment.center,
+            children: [
+              SizedBox(
+                width: 150,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: randomCoureurs,
+                  child: const Text("Willekeurig toewijzen",
+                      textAlign: TextAlign.center),
+                ),
+              ),
+              SizedBox(
+                width: 150,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: resetKnop,
+                  child: const Row(
+                    children: [
+                      Text(
+                        "Reset ",
+                        textAlign: TextAlign.center,
+                      ),
+                      Icon(Icons.restore)
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 150,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: verbergCoureurs,
+                  child: Align(
+                    child: Text(
+                      coureursZichtbaarheid
+                          ? "Verberg Coureurs"
+                          : "Toon Coureurs",
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 150,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: simuleerKampioenschap,
+                  child: const Row(
+                    children: [Text("Simuleer "), Icon(Icons.timer)],
+                  ),
+                ),
+              ),
+              if (overzicht == true)
+                SizedBox(
+                  width: 155,
+                  child: ElevatedButton(
+                    onPressed: overzichtSimulatie,
+                    child: const Row(
+                      children: [Text("Overzicht "), Icon(Icons.visibility)],
+                    ),
+                  ),
+                ),
+            ],
           ),
-          ElevatedButton(
-            onPressed: resetKnop,
-            child: Text("Reset"),
-          ),
-          ElevatedButton(
-            onPressed: verbergCoureurs,
-            child: Text(
-                coureursZichtbaarheid ? "Verberg Coureurs" : "Toon Coureurs"),
-          ),
-          ElevatedButton(
-            onPressed: simuleerKampioenschap,
-            child: Text("Simuleer Kampioenschap"),
-          ),
-          if (overzicht == true)
-            ElevatedButton(
-              onPressed: overzichtSimulatie,
-              child: Text("Overzicht"),
-            ),
           Expanded(
               flex: 3,
               child: Padding(
@@ -163,7 +198,7 @@ class _TeamswapperState extends State<Teamswapper> {
                               dragTargetMaken(index * 2 + 1),
                             ],
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -225,20 +260,6 @@ class _TeamswapperState extends State<Teamswapper> {
             ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.swap_calls),
-            label: 'Teamswapper',
-          ),
-        ],
-        currentIndex: selectedIndex,
-        onTap: onItemTapped,
-      ),
     );
   }
 
@@ -274,7 +295,7 @@ class _TeamswapperState extends State<Teamswapper> {
         width: 53,
         color: const Color.fromARGB(255, 228, 233, 231),
         child: Center(
-          child: droppedImage[index] ?? Text('Plaats hier'),
+          child: droppedImage[index] ?? const Text('Plaats hier'),
         ),
       );
     });

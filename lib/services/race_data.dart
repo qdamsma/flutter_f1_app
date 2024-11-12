@@ -29,7 +29,7 @@ class RaceData {
     }
     return null;
   }
-  
+
   // Functie met switch case om de afbeeldingen te laten zien naast de circuit data
   static String getCircuitImageAsset(String circuitId) {
     switch (circuitId) {
@@ -88,11 +88,11 @@ class RaceData {
 
   static Future<List<RaceData>> getCircuits() async {
     // Connectie met de api
-    final response_circuits =
+    final responseCircuits =
         await http.get(Uri.parse('https://ergast.com/api/f1/current.json'));
 
-    if (response_circuits.statusCode == 200) {
-      Map<String, dynamic> data = jsonDecode(response_circuits.body);
+    if (responseCircuits.statusCode == 200) {
+      Map<String, dynamic> data = jsonDecode(responseCircuits.body);
       List<dynamic> races = data['MRData']['RaceTable']['Races'];
 
       // Een list waar alle data komt die nodig gaat zijn bij het afbeelden van de races
@@ -102,7 +102,7 @@ class RaceData {
       for (var race in races) {
         String raceDate = race['date'];
         DateTime raceDateTime = DateTime.parse(raceDate);
-        DateTime startDate = raceDateTime.subtract(Duration(days: 2));
+        DateTime startDate = raceDateTime.subtract(const Duration(days: 2));
 
         List<String> weekendDates = List.generate(3, (index) {
           DateTime date = startDate.add(Duration(days: index));
@@ -115,7 +115,8 @@ class RaceData {
 
         raceList.add(RaceData(
           circuitnaam: race['Circuit']['circuitName'] ?? 'Onbekend Circuit',
-          locatie: race['Circuit']['Location']['locality'] ?? 'Onbekende Locatie',
+          locatie:
+              race['Circuit']['Location']['locality'] ?? 'Onbekende Locatie',
           land: race['Circuit']['Location']['country'] ?? 'Onbekend Land',
           raceDate: DateFormat('d MMM yyyy').format(raceDateTime),
           weekendDates: weekendDates,
