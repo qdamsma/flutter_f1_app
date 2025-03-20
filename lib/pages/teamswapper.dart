@@ -108,7 +108,7 @@ class _TeamswapperState extends State<Teamswapper> {
       appBar: AppBar(
         title: Image.asset('lib/assets/images/f1_logo_app.png', height: 40),
         centerTitle: true,
-        backgroundColor: const Color(0xFFFF1E00),
+        backgroundColor: Color.fromARGB(255, 203, 29, 6),
         elevation: 0.0,
       ),
       body: Column(
@@ -285,7 +285,7 @@ class _TeamswapperState extends State<Teamswapper> {
                         height: 100,
                         width: 100,
                         decoration: BoxDecoration(
-                            color: Colors.redAccent,
+                            color: Color.fromARGB(255, 203, 29, 6),
                             borderRadius: BorderRadius.circular(10)),
                         child: Center(child: driver['image']),
                       ),

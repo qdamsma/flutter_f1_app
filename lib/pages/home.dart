@@ -58,7 +58,7 @@ class _F1_HomeState extends State<F1_Home> {
       appBar: AppBar(
         title: Image.asset('lib/assets/images/f1_logo_app.png', height: 40),
         centerTitle: true,
-        backgroundColor: const Color(0xFFFF1E00),
+        backgroundColor: const Color.fromARGB(255, 203, 29, 6),
         elevation: 0.0,
       ),
       body: Column(
@@ -66,7 +66,7 @@ class _F1_HomeState extends State<F1_Home> {
           if (nextRace != null)
             Container(
               width: double.infinity,
-              color: const Color(0xFFFF1E00),
+              color: Color.fromARGB(255, 203, 29, 6),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
