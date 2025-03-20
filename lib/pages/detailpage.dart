@@ -6,17 +6,17 @@ class CircuitDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    final RaceData race = ModalRoute.of(context)!.settings.arguments as RaceData;
+    final RaceData race =
+        ModalRoute.of(context)!.settings.arguments as RaceData;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(race.land, style: const TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFFFF1E00),
         iconTheme: const IconThemeData(
-          color: Colors.white, 
-          ),
-          centerTitle: true,
+          color: Colors.white,
+        ),
+        centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -25,9 +25,9 @@ class CircuitDetailPage extends StatelessWidget {
           children: [
             Center(
               child: Image.asset(
-              race.circuitImageAsset,
-              height: 210,
-              fit: BoxFit.cover,
+                race.circuitImageAsset,
+                height: 210,
+                fit: BoxFit.cover,
               ),
             ),
             Text(
@@ -44,8 +44,20 @@ class CircuitDetailPage extends StatelessWidget {
               style: const TextStyle(fontSize: 18),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Details nog toevoegen',
+            Text(
+              'Vrijetraining 1: ${race.practiceOneTime}',
+              style: const TextStyle(fontSize: 16),
+            ),
+            Text(
+              'Vrijetraining 2: ${race.practiceTwoTime}',
+              style: TextStyle(fontSize: 16),
+            ),
+            Text(
+              'Kwalificatie: ${race.qualificationTime}',
+              style: TextStyle(fontSize: 16),
+            ),
+            Text(
+              'Race: ${race.raceTime}',
               style: TextStyle(fontSize: 16),
             ),
           ],

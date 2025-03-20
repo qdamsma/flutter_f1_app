@@ -7,6 +7,10 @@ class RaceData {
   String locatie;
   String land;
   String raceDate;
+  String practiceOneTime;
+  String practiceTwoTime;
+  String qualificationTime;
+  String raceTime;
   List<String> weekendDates;
   String circuitImageAsset;
 
@@ -15,6 +19,10 @@ class RaceData {
     required this.locatie,
     required this.land,
     required this.raceDate,
+    required this.practiceOneTime,
+    required this.practiceTwoTime,
+    required this.qualificationTime,
+    required this.raceTime,
     required this.weekendDates,
     required this.circuitImageAsset,
   });
@@ -104,14 +112,32 @@ class RaceData {
         DateTime raceDateTime = DateTime.parse(raceDate);
         DateTime startDate = raceDateTime.subtract(const Duration(days: 2));
 
+        // If statement zodat de timer het doet nu api niet meer is geupdate in 2025
+        if (raceDateTime.isBefore(DateTime.now())) {
+          raceDateTime = DateTime(
+              raceDateTime.year + 1, raceDateTime.month, raceDateTime.day);
+        }
+
         List<String> weekendDates = List.generate(3, (index) {
           DateTime date = startDate.add(Duration(days: index));
           return DateFormat('d MMM').format(date);
         });
-
         if (weekendDates.length == 3) {
           weekendDates.removeAt(1);
         }
+        String formatDateTime(String date, String time) {
+          DateTime dateTime =
+              DateTime.parse("$date $time".replaceFirst("Z", ""));
+          return DateFormat("d MMM yyyy - HH:mm").format(dateTime);
+        }
+
+        String practiceOneTime = formatDateTime(
+            race['FirstPractice']['date'], race['FirstPractice']['time']);
+        String practiceTwoTime = formatDateTime(
+            race['SecondPractice']['date'], race['SecondPractice']['time']);
+        String qualificationTime = formatDateTime(
+            race['Qualifying']['date'], race['Qualifying']['time']);
+        String raceTime = formatDateTime(race['date'], race['time']);
 
         raceList.add(RaceData(
           circuitnaam: race['Circuit']['circuitName'] ?? 'Onbekend Circuit',
@@ -121,6 +147,10 @@ class RaceData {
           raceDate: DateFormat('d MMM yyyy').format(raceDateTime),
           weekendDates: weekendDates,
           circuitImageAsset: getCircuitImageAsset(race['Circuit']['circuitId']),
+          practiceOneTime: practiceOneTime,
+          practiceTwoTime: practiceTwoTime,
+          qualificationTime: qualificationTime,
+          raceTime: raceTime,
         ));
       }
 

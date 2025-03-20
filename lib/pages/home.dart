@@ -79,7 +79,7 @@ class _F1_HomeState extends State<F1_Home> {
                           color: Color.fromARGB(255, 255, 255, 255)),
                     ),
                     Text(
-                      '${timeUntilNextRace.inDays}d ${timeUntilNextRace.inHours % 24}h ${timeUntilNextRace.inMinutes % 60}m ${timeUntilNextRace.inSeconds % 60}s',
+                      '${timeUntilNextRace.inDays}d ${timeUntilNextRace.inHours % 24}h ${timeUntilNextRace.inMinutes % 60}m ${timeUntilNextRace.inSeconds % 60}s (accuraat aan vorig seizoen)',
                       style: const TextStyle(
                           fontSize: 16,
                           color: Color.fromARGB(255, 255, 255, 255)),

@@ -12,6 +12,29 @@ class Teamswapper extends StatefulWidget {
 class _TeamswapperState extends State<Teamswapper> {
   List<Image?> droppedImage = List.generate(20, (index) => null);
 
+  Future<void> uitlegKnop() {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Uitleg Teamswapper'),
+          content: const Text(
+              'Teamswapper is een simulatie om het f1 seizoen van 2024 na te simuleren. Op de pagina zie je alle coureurs en teams van het F1 seizoen van 2024. Sleep coureurs naar een team naar keuze en klik op "Simuleer". \n\n'
+              'De simulatie is gebaseerd op een formule met een vorm van willekeurigheid om de simulatie elke keer een andere uitslag te geven, uiteraard is er rekening gehouden met de skills van de coureur. \n\n'
+              'Veel plezier en bedenk de gekste combinaties.'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.close),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   // Haalt reset functie op uit teamswapper_functies
   void resetKnop() {
     setState(() {
@@ -46,10 +69,9 @@ class _TeamswapperState extends State<Teamswapper> {
     });
   }
 
-  Future<void> overzichtSimulatie() async {
+  Future<void> overzichtSimulatie() {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Overzicht Simulatie'),
@@ -97,6 +119,19 @@ class _TeamswapperState extends State<Teamswapper> {
             alignment: WrapAlignment.center,
             children: [
               SizedBox(
+                width: 155,
+                child: ElevatedButton(
+                  onPressed: uitlegKnop,
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.red,
+                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [Text("Uitleg"), Icon(Icons.help)],
+                  ),
+                ),
+              ),
+              SizedBox(
                 width: 150,
                 height: 50,
                 child: ElevatedButton(
@@ -111,6 +146,7 @@ class _TeamswapperState extends State<Teamswapper> {
                 child: ElevatedButton(
                   onPressed: resetKnop,
                   child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         "Reset ",
