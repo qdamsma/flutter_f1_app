@@ -232,11 +232,13 @@ class _TeamswapperState extends State<Teamswapper> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount:
+                        MediaQuery.of(context).size.width > 600 ? 3 : 2,
                     mainAxisSpacing: 10,
                     crossAxisSpacing: 10,
-                    childAspectRatio: 1 / 1.1,
+                    childAspectRatio:
+                        MediaQuery.of(context).size.width > 600 ? 2.1 : 1 / 1.1,
                   ),
                   itemCount: racingteams.length,
                   itemBuilder: (context, index) {
@@ -298,8 +300,9 @@ class _TeamswapperState extends State<Teamswapper> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount:
+                          MediaQuery.of(context).size.width > 600 ? 8 : 4,
                       mainAxisSpacing: 10,
                       crossAxisSpacing: 10),
                   itemCount: drivers.length,
