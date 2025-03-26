@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_f1_app/pages/teamswapper_functies.dart';
 import 'package:flutter_f1_app/services/teamswapper_data.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
 class Teamswapper extends StatefulWidget {
   const Teamswapper({super.key});
@@ -11,6 +14,40 @@ class Teamswapper extends StatefulWidget {
 
 class _TeamswapperState extends State<Teamswapper> {
   List<Image?> droppedImage = List.generate(20, (index) => null);
+
+  bool canSimulate = true;
+  StreamSubscription? shakeListener;
+
+  @override
+  void initState() {
+    super.initState();
+    startShakeDetection();
+  }
+
+  void startShakeDetection() {
+    shakeListener = accelerometerEventStream().listen((event) {
+      double acceleration =
+          event.x * event.x + event.y * event.y + event.z * event.z;
+
+      if (acceleration > 1500 && canSimulate) {
+        triggerSimulation();
+      }
+    });
+  }
+
+  void triggerSimulation() {
+    setState(() {
+      canSimulate = false;
+      simuleerKampioenschap();
+    });
+
+    // Cooldown van 5 seconden voordat je opnieuw kunt schudden
+    Future.delayed(const Duration(seconds: 5), () {
+      setState(() {
+        canSimulate = true;
+      });
+    });
+  }
 
   Future<void> uitlegKnop() {
     return showDialog<void>(
@@ -101,7 +138,6 @@ class _TeamswapperState extends State<Teamswapper> {
     );
   }
 
-  // Build van de pagina
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -172,16 +208,6 @@ class _TeamswapperState extends State<Teamswapper> {
                   ),
                 ),
               ),
-              SizedBox(
-                width: 150,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: simuleerKampioenschap,
-                  child: const Row(
-                    children: [Text("Simuleer "), Icon(Icons.timer)],
-                  ),
-                ),
-              ),
               if (overzicht == true)
                 SizedBox(
                   width: 155,
@@ -192,6 +218,13 @@ class _TeamswapperState extends State<Teamswapper> {
                     ),
                   ),
                 ),
+              const Padding(
+                padding: EdgeInsets.all(6.0),
+                child: Text(
+                  "Schud je telefoon om het kampioenschap te simuleren!",
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ],
           ),
           Expanded(
